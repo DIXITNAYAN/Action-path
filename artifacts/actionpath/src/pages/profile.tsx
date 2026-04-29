@@ -57,24 +57,25 @@ export default function Profile() {
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
-    defaultValues: savedProfile || {
-      name: "",
-      age: 25,
-      gender: "other",
-      occupation: "unemployed",
-      income: 0,
-      state: "",
-      education: "none",
-      maritalStatus: "single",
-      differentlyAbled: false,
-      hasAadhaar: undefined,
-      hasPAN: undefined,
-      hasVoterId: undefined,
-      hasRationCard: undefined,
-      hasDrivingLicense: undefined,
-      hasBankAccount: undefined,
-    },
-  });
+    defaultValues: {
+        name: savedProfile?.name ?? "",
+        age: savedProfile?.age ?? 25,
+        gender: savedProfile?.gender ?? "other",
+        occupation: savedProfile?.occupation ?? "unemployed",
+        income: savedProfile?.income ?? 0,
+        state: savedProfile?.state ?? "",
+        education: savedProfile?.education ?? "none",
+        maritalStatus: savedProfile?.maritalStatus ?? "single",
+        differentlyAbled: savedProfile?.differentlyAbled ?? false,
+        // Document Yes/No fields ALWAYS start blank - never load from saved data
+        hasAadhaar: undefined,
+        hasPAN: undefined,
+        hasVoterId: undefined,
+        hasRationCard: undefined,
+        hasDrivingLicense: undefined,
+        hasBankAccount: undefined,
+      },
+    });
 
   const onSubmit = async (data: FormValues) => {
     // Save profile locally
