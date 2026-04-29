@@ -29,12 +29,12 @@ const formSchema = z.object({
   education: z.enum(["none", "primary", "secondary", "higher_secondary", "graduate", "postgraduate"]),
   maritalStatus: z.enum(["single", "married", "divorced", "widowed"]),
   differentlyAbled: z.boolean().default(false).optional(),
-  hasAadhaar: z.enum(["yes", "no"]),
-  hasPAN: z.enum(["yes", "no"]),
-  hasVoterId: z.enum(["yes", "no"]),
-  hasRationCard: z.enum(["yes", "no"]),
-  hasDrivingLicense: z.enum(["yes", "no"]),
-  hasBankAccount: z.enum(["yes", "no"]),
+  hasAadhaar: z.enum(["yes", "no"], { required_error: "Please select Yes or No" }),
+  hasPAN: z.enum(["yes", "no"], { required_error: "Please select Yes or No" }),
+  hasVoterId: z.enum(["yes", "no"], { required_error: "Please select Yes or No" }),
+  hasRationCard: z.enum(["yes", "no"], { required_error: "Please select Yes or No" }),
+  hasDrivingLicense: z.enum(["yes", "no"], { required_error: "Please select Yes or No" }),
+  hasBankAccount: z.enum(["yes", "no"], { required_error: "Please select Yes or No" }),
 });
 
 type FormValues = z.infer<typeof formSchema>;
@@ -67,12 +67,12 @@ export default function Profile() {
       education: "none",
       maritalStatus: "single",
       differentlyAbled: false,
-      hasAadhaar: "no",
-      hasPAN: "no",
-      hasVoterId: "no",
-      hasRationCard: "no",
-      hasDrivingLicense: "no",
-      hasBankAccount: "no",
+      hasAadhaar: undefined,
+      hasPAN: undefined,
+      hasVoterId: undefined,
+      hasRationCard: undefined,
+      hasDrivingLicense: undefined,
+      hasBankAccount: undefined,
     },
   });
 
@@ -365,28 +365,31 @@ export default function Profile() {
                             control={form.control}
                             name={doc.name as keyof FormValues}
                             render={({ field }) => (
-                              <FormItem className="flex flex-row items-center justify-between rounded-xl border p-4 bg-muted/20 hover:bg-muted/30 transition-colors">
-                                <div className="space-y-0.5">
-                                  <FormLabel className="text-base font-medium">
-                                    {t(`profile.fields.${doc.label}`)}
-                                  </FormLabel>
+                              <FormItem className="flex flex-col gap-2 rounded-xl border p-4 bg-muted/20 hover:bg-muted/30 transition-colors">
+                                <div className="flex flex-row items-center justify-between">
+                                  <div className="space-y-0.5">
+                                    <FormLabel className="text-base font-medium">
+                                      {t(`profile.fields.${doc.label}`)}
+                                    </FormLabel>
+                                  </div>
+                                  <FormControl>
+                                    <RadioGroup
+                                      onValueChange={field.onChange}
+                                      value={(field.value as string) ?? ""}
+                                      className="flex space-x-4"
+                                    >
+                                      <div className="flex items-center space-x-2">
+                                        <RadioGroupItem value="yes" id={`${doc.name}-yes`} />
+                                        <FormLabel htmlFor={`${doc.name}-yes`} className="font-normal">{t("profile.options.yes")}</FormLabel>
+                                      </div>
+                                      <div className="flex items-center space-x-2">
+                                        <RadioGroupItem value="no" id={`${doc.name}-no`} />
+                                        <FormLabel htmlFor={`${doc.name}-no`} className="font-normal">{t("profile.options.no")}</FormLabel>
+                                      </div>
+                                    </RadioGroup>
+                                  </FormControl>
                                 </div>
-                                <FormControl>
-                                  <RadioGroup
-                                    onValueChange={field.onChange}
-                                    defaultValue={field.value as string}
-                                    className="flex space-x-4"
-                                  >
-                                    <div className="flex items-center space-x-2">
-                                      <RadioGroupItem value="yes" id={`${doc.name}-yes`} />
-                                      <FormLabel htmlFor={`${doc.name}-yes`} className="font-normal">{t("profile.options.yes")}</FormLabel>
-                                    </div>
-                                    <div className="flex items-center space-x-2">
-                                      <RadioGroupItem value="no" id={`${doc.name}-no`} />
-                                      <FormLabel htmlFor={`${doc.name}-no`} className="font-normal">{t("profile.options.no")}</FormLabel>
-                                    </div>
-                                  </RadioGroup>
-                                </FormControl>
+                                <FormMessage />
                               </FormItem>
                             )}
                           />
