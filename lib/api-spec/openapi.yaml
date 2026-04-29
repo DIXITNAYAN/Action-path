@@ -3,13 +3,17 @@ info:
   # Do not change the title, if the title changes, the import paths will be broken
   title: Api
   version: 0.1.0
-  description: API specification
+  description: ActionPath API – personalized recommendations for Indian government schemes, documents, and jobs.
 servers:
   - url: /api
     description: Base API path
 tags:
   - name: health
     description: Health operations
+  - name: actions
+    description: Government schemes, documents, jobs, and other actions
+  - name: recommendations
+    description: Personalized recommendation engine
 paths:
   /healthz:
     get:
@@ -24,6 +28,119 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+
+  /actions:
+    get:
+      operationId: listActions
+      tags: [actions]
+      summary: List all actions
+      description: Returns the full library of government actions, optionally filtered by category or search query.
+      parameters:
+        - in: query
+          name: category
+          required: false
+          schema:
+            type: string
+            description: Filter by category slug (e.g. "documents", "schemes", "jobs", "women", "farmer", "student", "youth", "health", "housing", "senior", "finance").
+        - in: query
+          name: search
+          required: false
+          schema:
+            type: string
+            description: Free-text search over title, description, and tags.
+      responses:
+        "200":
+          description: List of actions
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ActionListResponse"
+
+  /actions/{id}:
+    get:
+      operationId: getAction
+      tags: [actions]
+      summary: Get a single action by id
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Action detail
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Action"
+        "404":
+          description: Not found
+
+  /categories:
+    get:
+      operationId: listCategories
+      tags: [actions]
+      summary: List action categories with counts
+      description: Returns each category along with the number of actions it contains. Useful for filter chips and dashboard summaries.
+      responses:
+        "200":
+          description: Categories
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/CategorySummary"
+
+  /recommendations:
+    post:
+      operationId: getRecommendations
+      tags: [recommendations]
+      summary: Get personalized action plan
+      description: Runs the rule-based recommendation engine against the submitted user profile and returns matching actions, ranked by priority.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserProfile"
+      responses:
+        "200":
+          description: Personalized recommendations
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ActionListResponse"
+
+  /stats:
+    get:
+      operationId: getStats
+      tags: [actions]
+      summary: Library statistics
+      description: Returns counts of total actions, categories, and high-priority items for dashboard summaries.
+      responses:
+        "200":
+          description: Stats
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StatsResponse"
+
+  /featured:
+    get:
+      operationId: getFeaturedActions
+      tags: [actions]
+      summary: Featured / spotlight actions
+      description: Returns a curated list of headline schemes most citizens benefit from.
+      responses:
+        "200":
+          description: Featured actions
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ActionListResponse"
+
 components:
   schemas:
     HealthStatus:
@@ -34,3 +151,154 @@ components:
       required:
         - status
 
+    ActionPriority:
+      type: string
+      enum: [high, medium, low]
+
+    Action:
+      type: object
+      required:
+        - id
+        - category
+        - categoryLabel
+        - title
+        - description
+        - documents
+        - link
+        - priority
+        - tags
+      properties:
+        id:
+          type: integer
+        category:
+          type: string
+        categoryLabel:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+        documents:
+          type: array
+          items:
+            type: string
+        link:
+          type: string
+          format: uri
+        priority:
+          $ref: "#/components/schemas/ActionPriority"
+        tags:
+          type: array
+          items:
+            type: string
+        eligibility:
+          type: string
+          description: Human-readable eligibility summary.
+        benefit:
+          type: string
+          description: Short summary of the benefit (e.g. "Up to ₹6,000/year").
+        ministry:
+          type: string
+          description: Issuing ministry / department.
+
+    ActionListResponse:
+      type: object
+      required:
+        - items
+        - total
+      properties:
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/Action"
+        total:
+          type: integer
+
+    CategorySummary:
+      type: object
+      required:
+        - slug
+        - label
+        - count
+      properties:
+        slug:
+          type: string
+        label:
+          type: string
+        count:
+          type: integer
+
+    StatsResponse:
+      type: object
+      required:
+        - totalActions
+        - totalCategories
+        - highPriorityCount
+      properties:
+        totalActions:
+          type: integer
+        totalCategories:
+          type: integer
+        highPriorityCount:
+          type: integer
+
+    UserProfile:
+      type: object
+      required:
+        - age
+        - gender
+        - occupation
+        - income
+        - state
+        - education
+        - maritalStatus
+        - hasAadhaar
+        - hasPAN
+        - hasVoterId
+        - hasRationCard
+        - hasDrivingLicense
+        - hasBankAccount
+      properties:
+        name:
+          type: string
+        age:
+          type: integer
+          minimum: 0
+          maximum: 120
+        gender:
+          type: string
+          enum: [male, female, other]
+        occupation:
+          type: string
+          enum: [student, salaried, self_employed, farmer, unemployed, homemaker, retired, daily_wage]
+        income:
+          type: integer
+          description: Annual household income in INR.
+        state:
+          type: string
+        education:
+          type: string
+          enum: [none, primary, secondary, higher_secondary, graduate, postgraduate]
+        maritalStatus:
+          type: string
+          enum: [single, married, divorced, widowed]
+        differentlyAbled:
+          type: boolean
+        hasAadhaar:
+          type: string
+          enum: [yes, no]
+        hasPAN:
+          type: string
+          enum: [yes, no]
+        hasVoterId:
+          type: string
+          enum: [yes, no]
+        hasRationCard:
+          type: string
+          enum: [yes, no]
+        hasDrivingLicense:
+          type: string
+          enum: [yes, no]
+        hasBankAccount:
+          type: string
+          enum: [yes, no]

@@ -1,0 +1,105 @@
+{
+  "nav": {
+    "home": "Home",
+    "explore": "Explore",
+    "saved": "Saved",
+    "toggleLang": "EN | हिं"
+  },
+  "hero": {
+    "headline": "Find What You Should Do Next",
+    "subheadline": "A personalized guide to government schemes, documents, and jobs based on your profile.",
+    "getStarted": "Get Started"
+  },
+  "stats": {
+    "totalSchemes": "Schemes & Services",
+    "categories": "Categories",
+    "highPriority": "High Priority Actions"
+  },
+  "howItWorks": {
+    "title": "How it works",
+    "step1": { "title": "Tell us about yourself", "desc": "Fill out a short profile with your details." },
+    "step2": { "title": "Get personalized matches", "desc": "We analyze hundreds of schemes to find what you're eligible for." },
+    "step3": { "title": "Take action", "desc": "Follow step-by-step guides to apply and track your progress." }
+  },
+  "featured": {
+    "title": "Featured Schemes"
+  },
+  "profile": {
+    "title": "Complete Your Profile",
+    "step1": "Personal",
+    "step2": "Financial",
+    "step3": "Documents",
+    "next": "Next Step",
+    "back": "Back",
+    "submit": "Show My Action Plan",
+    "fields": {
+      "name": "Full Name (Optional)",
+      "age": "Age",
+      "gender": "Gender",
+      "state": "State",
+      "maritalStatus": "Marital Status",
+      "education": "Education Level",
+      "differentlyAbled": "Differently Abled?",
+      "occupation": "Occupation",
+      "income": "Annual Household Income (₹)",
+      "hasAadhaar": "Do you have an Aadhaar Card?",
+      "hasPAN": "Do you have a PAN Card?",
+      "hasVoterId": "Do you have a Voter ID?",
+      "hasRationCard": "Do you have a Ration Card?",
+      "hasDrivingLicense": "Do you have a Driving License?",
+      "hasBankAccount": "Do you have a Bank Account?"
+    },
+    "options": {
+      "male": "Male", "female": "Female", "other": "Other",
+      "single": "Single", "married": "Married", "divorced": "Divorced", "widowed": "Widowed",
+      "none": "None", "primary": "Primary", "secondary": "Secondary", "higher_secondary": "Higher Secondary", "graduate": "Graduate", "postgraduate": "Postgraduate",
+      "student": "Student", "salaried": "Salaried", "self_employed": "Self Employed", "farmer": "Farmer", "unemployed": "Unemployed", "homemaker": "Homemaker", "retired": "Retired", "daily_wage": "Daily Wage Worker",
+      "yes": "Yes", "no": "No"
+    }
+  },
+  "results": {
+    "title": "Your Personalized Action Plan",
+    "empty": "No actions matched your profile.",
+    "filterAll": "All",
+    "search": "Search actions...",
+    "priority": {
+      "high": "High Priority",
+      "medium": "Medium Priority",
+      "low": "Low Priority"
+    },
+    "card": {
+      "eligibility": "Eligibility",
+      "benefit": "Benefit",
+      "ministry": "Ministry",
+      "documents": "Documents Required",
+      "apply": "Apply Now",
+      "save": "Save",
+      "saved": "Saved",
+      "markComplete": "Mark Complete",
+      "completed": "Completed"
+    },
+    "toast": {
+      "saved": "Action saved to your list",
+      "unsaved": "Action removed from your list",
+      "completed": "Action marked as complete!",
+      "uncompleted": "Action marked as incomplete"
+    }
+  },
+  "explore": {
+    "title": "Explore All Actions",
+    "description": "Browse through all available government schemes, documents, and jobs."
+  },
+  "saved": {
+    "title": "Saved Actions",
+    "description": "Actions you've saved or completed for easy access.",
+    "empty": "You haven't saved any actions yet."
+  },
+  "footer": {
+    "credit": "© ActionPath"
+  },
+  "404": {
+    "title": "404 - Page Not Found",
+    "desc": "The page you are looking for does not exist.",
+    "home": "Go to Homepage"
+  }
+}
