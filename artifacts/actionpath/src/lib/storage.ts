@@ -48,5 +48,5 @@ export function useCompletedActions() {
 }
 
 export function useProfileStore() {
-  return useLocalStorage<UserProfile | null>("actionpath.profile", null);
+  return useLocalStorage<UserProfile | null>("actionpath.profile.v2", null);
 }
